@@ -2,6 +2,12 @@
 //THE TEST SERVER IS RUNNING ON LOCALHOST:3000//
 ////////////////////////////////////////////////
 
+// const { default: axios } = require("axios");
+
+// const { default: axios } = require("axios");
+
+// const { default: axios } = require("axios");
+
 // PROBLEM 1
 /*
     In the index.html file in this folder there is a button with an id of 'say-hello-button'!
@@ -66,38 +72,72 @@ sayHelloButton.addEventListener("click", sayHello);
 
 // PROBLEM 5 
 /*
-    Now that we have attached a few event listeners why dont we try adding a request? 
+    Now that we have attached a few event listeners 
+    why dont we try adding a request? 
     
     Below you will find an event listener on a button. 
     
-    Use axios inside the ohMy function to make a GET request to 'http://localhost:3000/animals' 
+    Use axios inside the ohMy function to 
+    make a GET request to 'http://localhost:3000/animals' 
     
-    Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
+    Handle the promise that's returned with a .then, 
+    which you should pass a callback function to. 
+    Inside the callback function, 
+    console.log the response's data 
+    (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
 
 const ohMy = () => {
     // YOUR CODE HERE
+    return axios.get('http://localhost:3000/animals')
+    .then(res => {
+        for(let i = 0; i < res.data.length; i++){
+            let temptag = document.createElement("p")
+            temptag.textContent = res.data[i]
+            document.querySelector("body").appendChild(temptag)
+        }
+        return res.data
+    })
 }
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
 
+// for loop for problem 9 that is added into problem 5
+// for(let i = 0; i < res.data.length; i++){
+//     let temptag = document.createElement('p')
+//     temptag.textContent = res.data[i]
+//     document.querySelector('body').appendChild(temptag)
+// }
 
 // PROBLEM 6 
 /*
-    Now lets see if you can send a request param! inside repeatMyParam function below  make get request to 'http://localhost:3000/repeat/{SOMEPARAM}', but with a string instead of {SOMEPARAM}.  
+    Now lets see if you can send a request param! inside repeatMyParam function 
+    below  make get request to 'http://localhost:3000/repeat/{SOMEPARAM}', 
+    but with a string instead of {SOMEPARAM}.  
 
-    The function that runs when this request is made will return whatever parameter you sent 
+    The function that runs when this request is made will 
+    return whatever parameter you sent 
 
-    Handle the promise returned from the request with a .then, which will take in a callback -- the callback function should print the response.data.
+    Handle the promise returned from the request with a .then, 
+    which will take in a callback -- 
+    the callback function should print the response.data.
     
-    Outside of the function, select the button with the id "repeat-button" and add a click event listener that calls the repeatMyParam function.
+    Outside of the function, 
+    select the button with the id "repeat-button" and 
+    add a click event listener that calls the repeatMyParam function.
     
     We'll be updating this function in the next problem.
 */
 
 const repeatMyParam = () => {
     //YOUR CODE HERE
+    let repeatEl = document.getElementById("repeat-text");
+    repeatEl.textContent = res.data;
+    repeatEl.style.display = "block";
+return axios.get("http://localhost:3000/repeat/${SOMEPARAM}")
+.then(res => res.data)
 }
+
 
 // PROBLEM 7
 /*
@@ -120,7 +160,15 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE
-
+function callQuery () {
+    axios.get("http://localhost:3000/query-test/name=tanner")
+    .then(res => (
+        console.log(res.data)
+    ))
+    .catch(err => {
+        console.log(err)
+    }) 
+}
 
 
 ////////////////
@@ -173,3 +221,32 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE 
+const inputs = document.querySelector("input")
+function addfood() {
+    //event.preventDefault() not needed unless you have conditions 
+  
+    let foodInput = document.querySelector("input")
+    let body = {
+        newFood: foodInput.value
+    }
+    axios.post('http://localhost:3000/food', body)
+        .then((res) => {
+            console.log(res.data)
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+    // let food = document.createElement('li')
+    const foodTitle = document.createElement('span')
+    foodTitle.textContent = foodInput.value
+    // food.appendChild(foodTitle)
+    document.querySelector("div").appendChild(foodTitle)
+
+    // const list = document.querySelector("ul")
+
+    // list.appendChild(food)
+    foodInput.value = ""
+
+  
+}
+inputs.addEventListener("click", addfood)
